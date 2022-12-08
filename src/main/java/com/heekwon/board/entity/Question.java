@@ -1,6 +1,7 @@
 package com.heekwon.board.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Question {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer id;					//질문게시판 번호
 	
 	@Column(length = 100)
@@ -29,5 +30,8 @@ public class Question {
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime createTime;	//글 등록일시
+	
+	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+	private List<Answer> answerList;
 	
 }
