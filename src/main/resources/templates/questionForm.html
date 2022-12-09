@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>질문하기</title>
+</head>
+<body>
+   <div>
+   		<h5>질문하기</h5>
+   		<form th:action="@{/questionCreateOk}">
+   			<div>
+   				<label>제목</label>
+   				<input type="text" name="subject">
+   			</div>
+   			<div>
+   				<label>질문내용</label>
+   				<textarea rows="10" name="content"></textarea>
+   			</div>
+   			<input type="submit" value="저장">
+   		</form>
+   </div>
+</body>
+</html>
