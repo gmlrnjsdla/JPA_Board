@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>questionView</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
-   <table border="1" cellpadding="0" cellspacing="0">
+<div class="container my-3">
+	
+   <table class="table">
    	<tr>
    		<th>번호</th>
    		<td th:text="${content.id}"></td>
@@ -23,5 +26,24 @@
    		<td th:text="${content.content}"></td>
 	<tr>
    </table>
+
+   <h6 th:text="|총 ${#lists.size(content.answerList)}개의 답변이 있습니다.|"></h6>
+   <hr>
+   
+   
+   <table class="table">
+   	<tr th:each="answer:${content.answerList}">
+   		<th>##&nbsp;&nbsp;</th>
+   		<td th:text="${answer.content}"></td>
+   		<td th:text="${answer.createTime}"></td>
+   	</tr>
+   </table>
+   
+   <br>
+   <form th:action="@{|/answerCreate/${content.id}|}" method="get">
+   	<textarea rows="5" cols="54" name="content" id="content"></textarea>
+   	<input type="submit" value="답변입력" id="answer_submit">
+   </form>
+   </div>
 </body>
 </html>

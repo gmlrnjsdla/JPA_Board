@@ -6,4 +6,6 @@ import com.heekwon.board.entity.Answer;
 
 public interface AnswerRepository extends JpaRepository<Answer, Integer>{
 
+	
+	
 }

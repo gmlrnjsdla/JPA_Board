@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+textarea#content{
+	border:1px solid pink;
+}
+
+input#answer_submit{
+	background-color: orange;
+}
+
+hr{
+	width:400px;
+	float:left;
+}
