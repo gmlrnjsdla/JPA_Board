@@ -63,11 +63,18 @@ public class MainController {
 		if(bindingResult.hasErrors()) {
 			return "joinForm";
 		}
+		
+		try {
 		String username = memberForm.getUsername();
 		String password = memberForm.getPassword();
 		String email = memberForm.getEmail();
 		
 		memberService.memberCreate(username, password, email);
+		}catch(Exception e){
+			e.printStackTrace();
+			bindingResult.reject("joinFail","이미 등록된 아이디입니다.");
+			return "joinForm";
+		}
 		
 		return "redirect:list";
 	}
