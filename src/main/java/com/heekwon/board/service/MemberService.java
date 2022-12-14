@@ -1,5 +1,7 @@
 package com.heekwon.board.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,18 @@ public class MemberService {
 		member.setEmail(email);
 		
 		memberRepository.save(member);
+		
+		return member;
+	}
+	
+	public SiteMember memberLogin(String username) {
+		
+		Optional<SiteMember> oMember = memberRepository.findByUsername(username);
+		
+		SiteMember member = new SiteMember();
+		if(oMember.isPresent()) {
+			member = oMember.get();
+		}
 		
 		return member;
 	}

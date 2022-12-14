@@ -12,7 +12,7 @@
 	}
 </style>
 
-<title>회원가입</title>
+<title>회원 로그인</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
@@ -31,29 +31,26 @@
      </div>
     </nav> 
 	
-	<form th:action="@{/joinOk}" method="post" th:object="${memberForm}">
+	<form th:action="@{/loginOk}" method="post">
 
 		<div class="mb-3">
 		<br><br>
-		<h5>회원가입</h5>
+		<h5>회원 로그인</h5>
 		<hr>
 			<div>
-				<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
-					<div th:each="err:${#fields.allErrors()}" th:text="${err}"></div>
+				<div class="alert alert-danger" >
+					<div></div>
 				</div>
 			</div>
 		<br>
-		  <input type="text" name="username" class="form-control" id="exampleFormControlInput1" placeholder="아이디" th:field="*{username}">
+		  <input type="text" name="username" class="form-control" id="exampleFormControlInput1" placeholder="아이디">
 		</div>
 		
 		<div class="mb-3">
-		  <input type="password" class="form-control" name="password" id="exampleFormControlTextarea1" rows="5" placeholder="비밀번호" th:field="*{password}">
+		  <input type="password" class="form-control" name="password" id="exampleFormControlTextarea1" placeholder="비밀번호">
 		</div>
 		
-		<div class="mb-3">
-		  <input type="email" class="form-control" name="email" id="exampleFormControlTextarea1" rows="5" placeholder="이메일" th:field="*{email}">
-		</div>
-	<input type="submit" class="btn btn-primary mb-3" value="회원가입" style="width:80px; margin-left:100px;">
+	<input type="submit" class="btn btn-primary mb-3" value="로그인" style="width:80px; margin-left:100px;">
 	</form>
 </body>
 </html>

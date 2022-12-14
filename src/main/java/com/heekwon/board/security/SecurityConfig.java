@@ -24,8 +24,13 @@ public class SecurityConfig {
 			.and()	// h2-db 표시 해제
 			.headers()
 			.addHeaderWriter(new XFrameOptionsHeaderWriter(
-					XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
-				
+					XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+			//로그인 로그아웃 설정
+			.and()
+				.formLogin()
+				.loginPage("/login")	//로그인 페이지가 보이게 하는 요청
+				.defaultSuccessUrl("/index");	//성공시 이동할 요청
+			
 		return http.build();
 	}
 	

@@ -121,8 +121,6 @@ public class MainController {
 	@RequestMapping(value = "/questionForm")
 	public String questionCreate(QuestionForm questionForm) {
 		
-		
-		
 		return "questionForm";
 	}
 	
@@ -138,9 +136,16 @@ public class MainController {
 		
 		questionService.questionCreate(subject, content);
 		
-		
-		
-		
 		return "redirect:list";
 	}
+	
+	@RequestMapping(value = "/login")
+	public String login() {
+		
+		return "loginForm";
+	}
+	
+	
+	
+	
 }
