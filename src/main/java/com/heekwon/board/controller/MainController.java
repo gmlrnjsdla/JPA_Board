@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.heekwon.board.dto.AnswerForm;
 import com.heekwon.board.dto.QuestionDto;
 import com.heekwon.board.dto.QuestionForm;
 import com.heekwon.board.entity.Question;
@@ -56,7 +57,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/questionView/{id}")
-	public String questionView(@PathVariable("id") Integer id, Model model) {
+	public String questionView(@PathVariable("id") Integer id, Model model, AnswerForm answerForm) {
 
 		QuestionDto q = questionService.getQuestionView(id);
 		model.addAttribute("content", q);
@@ -65,8 +66,16 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/answerCreate/{id}")
-	public String answerCreate(@PathVariable("id") Integer id, @RequestParam("content") String content, Model model) {
-
+	public String answerCreate(@PathVariable("id") Integer id, @Valid AnswerForm answerForm, BindingResult bindingResult, Model model) {
+		
+		QuestionDto q = questionService.getQuestionView(id);
+		
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("content", q);
+			
+			return "questionView";
+		}
+		String content = answerForm.getContent();
 		answerService.answerCreate(id, content);
 		
 		return String.format("redirect:/questionView/%s", id);
