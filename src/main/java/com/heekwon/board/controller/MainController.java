@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +39,11 @@ public class MainController {
 	public String Home() {
 		return "redirect:list";
 	}
+	
+	@RequestMapping(value = "/layout")
+	public String layout() {
+		return "layout";
+	}
 
 	@RequestMapping(value = "/index")
 	public String index() {
@@ -45,13 +51,15 @@ public class MainController {
 	}	
 	
 	@RequestMapping(value = "/list")
-	public String list(Model model) {
+	public String list(Model model, @RequestParam(value="pageNum", defaultValue = "0") int page) {
 		
 //		List<Question> lq = questionRepository.findAll();
 		
-		List<QuestionDto> questionList = questionService.getQuestionList();
+//		List<QuestionDto> questionList = questionService.getQuestionList();
 		
-		model.addAttribute("list", questionList);
+		Page<Question> paging = questionService.getList(page);
+		
+		model.addAttribute("paging", paging);
 		
 		return "questionList";
 	}

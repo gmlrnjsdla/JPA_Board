@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.heekwon.board.dto.AnswerDto;
 import com.heekwon.board.dto.QuestionDto;
 import com.heekwon.board.entity.Question;
 import com.heekwon.board.exception.DataNotFoundException;
@@ -21,6 +24,19 @@ public class QuestionService {
 
 	private final QuestionRepository questionRepository;
 	private final AnswerRepository answerRepository;
+	
+	public Page<Question> getList(int page){
+		
+		List<Sort.Order> sort = new ArrayList<>();
+		
+		sort.add(Sort.Order.desc("id"));
+		
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sort));
+		
+		Page<Question> pages = questionRepository.findAll(pageable);
+		
+		return pages;
+	}
 	
 	public List<QuestionDto> getQuestionList() {
 		

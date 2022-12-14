@@ -1,13 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout}"
+	>
 <head>
+
+<style>
+	a:link{
+		text-decoration:none;
+		
+	}
+	a:visited{
+		text-decoration:none;
+		
+	}
+	a:hover{
+		text-decoration:underline;
+		
+	}
+</style>
+
 <meta charset="UTF-8">
 <title>질문답변 게시판</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
-   <div class="container my-3">
-   <h2 class="border-bottom py-2">질문 답변 게시판</h2>
+	<nav class="navbar bg-light">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="/index">HEEKWON Q&A BOARD</a>
+	    <a class="navbar-brand" href="#">로그인</a>
+	  </div>
+	</nav>
+
+
+   <div layout:fragment="content" class="container my-3">
+   
    <table class="table">
    	<tr>
    		<th>번호</th>
@@ -15,12 +42,39 @@
    		<th>등록일</th>
    	</tr>
    	
-   	<tr th:each="question:${list}">
+   	<tr th:each="question:${paging}">
    		<td th:text="${question.id}">번호</td>
    		<td><a th:href="@{|/questionView/${question.id}|}" th:text="${question.subject}">제목</a></td>
    		<td th:text="${question.createTime}">등록일</td>
    	</tr>
    </table>
+   
+   <!-- 페이징 시작 -->
+   
+   <div th:if=${!paging.isEmpty} aria-label="Page navigation example" >
+  <ul class="pagination justify-content-center">
+    <li th:classappend="${!paging.hasPrevious} ? 'disabled'" class="page-item">
+      <a class="page-link" th:href="@{|?pageNum=${paging.number-1}|}">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    
+    <li th:each="pageNum : ${#numbers.sequence(0,paging.totalPages-1)}" 
+    th:if="${pageNum>=paging.number-7 and pageNum<=paging.number+7}" 
+    th:classappend= "${pageNum==paging.number}? 'active'" class="page-item">
+    	<a class="page-link" th:href="@{|?pageNum=${pageNum}|}" th:text="${pageNum+1}"></a>
+    </li>
+    
+    <li th:classappend="${!paging.hasNext} ? 'disabled'" class="page-item">
+      <a class="page-link" th:href="@{|?pageNum=${paging.number+1}|}">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</div>
+   
+   <!-- 페이징 끝 -->
+   
    <a th:href="@{/questionForm}" class="btn btn-primary my-2">질문등록</a>
    </div>
 </body>

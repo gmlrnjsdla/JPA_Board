@@ -17,7 +17,12 @@
 <title>질문하기</title>
 </head>
 <body>
-
+<nav class="navbar bg-light">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="/index">HEEKWON Q&A BOARD</a>
+	    <a class="navbar-brand" href="#">로그인</a>
+	  </div>
+	</nav>
 <form th:action="@{/questionCreateOk}" method="post" th:object="${questionForm}">
 
 <div class="mb-3">
