@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+
+<style>
+	.mb-3{
+		width:300px;
+		margin-left:100px;
+	}
+</style>
+
+<title>회원가입</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+     <div class="container-fluid">
+       <a class="navbar-brand" href="/index">질문-답변 공개게시판</a>       
+       <div class="collapse navbar-collapse">
+       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+             <a class="nav-link" href="#">로그인</a>
+          </li>
+          <li class="nav-item">
+             <a class="nav-link" th:href="@{/join}">회원가입</a>
+          </li>
+       </ul>
+       </div>
+     </div>
+    </nav> 
+	
+	<form th:action="@{/joinOk}" method="post" th:object="${memberForm}">
+
+		<div class="mb-3">
+		<br><br>
+		<h5>회원가입</h5>
+		<hr>
+			<div>
+				<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+					<div th:each="err:${#fields.allErrors()}" th:text="${err}"></div>
+				</div>
+			</div>
+		<br>
+		  <input type="text" name="username" class="form-control" id="exampleFormControlInput1" placeholder="아이디" th:field="*{username}">
+		</div>
+		
+		<div class="mb-3">
+		  <input type="password" class="form-control" name="password" id="exampleFormControlTextarea1" rows="5" placeholder="비밀번호" th:field="*{password}">
+		</div>
+		
+		<div class="mb-3">
+		  <input type="email" class="form-control" name="email" id="exampleFormControlTextarea1" rows="5" placeholder="이메일" th:field="*{email}">
+		</div>
+	<input type="submit" class="btn btn-primary mb-3" value="회원가입" style="width:80px; margin-left:100px;">
+	</form>
+</body>
+</html>

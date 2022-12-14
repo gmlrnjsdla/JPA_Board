@@ -1,7 +1,5 @@
 package com.heekwon.board.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -14,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.heekwon.board.dto.AnswerForm;
+import com.heekwon.board.dto.MemberForm;
 import com.heekwon.board.dto.QuestionDto;
 import com.heekwon.board.dto.QuestionForm;
 import com.heekwon.board.entity.Question;
+import com.heekwon.board.repository.MemberRepository;
 import com.heekwon.board.service.AnswerService;
+import com.heekwon.board.service.MemberService;
 import com.heekwon.board.service.QuestionService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class MainController {
 	
 	private final QuestionService questionService;
 	private final AnswerService answerService;
+	private final MemberService memberService;
 	
 	@RequestMapping(value = "/")
 	public String Home() {
@@ -49,6 +51,26 @@ public class MainController {
 	public String index() {
 		return "redirect:list";
 	}	
+	
+	@RequestMapping(value = "/join")
+	public String join(MemberForm memberForm) {
+		return "joinForm";
+	}
+	
+	@RequestMapping(value = "/joinOk")
+	public String answerCreate(@Valid MemberForm memberForm, BindingResult bindingResult, Model model) {
+		
+		if(bindingResult.hasErrors()) {
+			return "joinForm";
+		}
+		String username = memberForm.getUsername();
+		String password = memberForm.getPassword();
+		String email = memberForm.getEmail();
+		
+		memberService.memberCreate(username, password, email);
+		
+		return "redirect:list";
+	}
 	
 	@RequestMapping(value = "/list")
 	public String list(Model model, @RequestParam(value="pageNum", defaultValue = "0") int page) {
