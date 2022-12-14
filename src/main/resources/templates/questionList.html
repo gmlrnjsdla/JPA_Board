@@ -6,17 +6,17 @@
 <head>
 
 <style>
-	a:link{
+	td a:link{
 		text-decoration:none;
-		
+		color:black;
 	}
-	a:visited{
+	td a:visited{
 		text-decoration:none;
-		
+		color:black;
 	}
-	a:hover{
+	td a:hover{
 		text-decoration:underline;
-		
+		color:#cccccc;
 	}
 </style>
 
@@ -44,7 +44,13 @@
    	
    	<tr th:each="question:${paging}">
    		<td th:text="${question.id}">번호</td>
-   		<td><a th:href="@{|/questionView/${question.id}|}" th:text="${question.subject}">제목</a></td>
+   		<td>
+   			<a th:href="@{|/questionView/${question.id}|}" th:text="${question.subject}">제목</a>
+			<span class="small ms-2" th:if="${#lists.size(question.answerList)>0}"
+			th:text="${#lists.size(question.answerList)}">
+				
+			</span>   			
+   		</td>
    		<td th:text="${question.createTime}">등록일</td>
    	</tr>
    </table>
@@ -60,7 +66,7 @@
     </li>
     
     <li th:each="pageNum : ${#numbers.sequence(0,paging.totalPages-1)}" 
-    th:if="${pageNum>=paging.number-7 and pageNum<=paging.number+7}" 
+    th:if="${pageNum>=paging.number-3 and pageNum<=paging.number+3}" 
     th:classappend= "${pageNum==paging.number}? 'active'" class="page-item">
     	<a class="page-link" th:href="@{|?pageNum=${pageNum}|}" th:text="${pageNum+1}"></a>
     </li>
