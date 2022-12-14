@@ -2,13 +2,18 @@ package com.heekwon.board.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.heekwon.board.dto.QuestionDto;
+import com.heekwon.board.dto.QuestionForm;
 import com.heekwon.board.entity.Question;
 import com.heekwon.board.service.AnswerService;
 import com.heekwon.board.service.QuestionService;
@@ -68,15 +73,27 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/questionForm")
-	public String questionCreate() {
+	public String questionCreate(QuestionForm questionForm) {
+		
+		
 		
 		return "questionForm";
 	}
 	
-	@RequestMapping(value = "/questionCreateOk")
-	public String createOk(@RequestParam("subject") String subject, @RequestParam("content") String content) {
+	@PostMapping(value = "/questionCreateOk")
+	public String createOk(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			return "questionForm";
+		}
+		
+		String subject = questionForm.getSubject();
+		String content = questionForm.getContent();
 		
 		questionService.questionCreate(subject, content);
+		
+		
+		
 		
 		return "redirect:list";
 	}

@@ -2,22 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+
+<style>
+	.mb-3{
+		width:500px;
+		margin-left:100px;
+	}
+	
+	
+	
+</style>
 <title>질문하기</title>
 </head>
 <body>
-   <div>
-   		<h5>질문하기</h5>
-   		<form th:action="@{/questionCreateOk}">
-   			<div>
-   				<label>제목</label>
-   				<input type="text" name="subject">
-   			</div>
-   			<div>
-   				<label>질문내용</label>
-   				<textarea rows="10" name="content"></textarea>
-   			</div>
-   			<input type="submit" value="저장">
-   		</form>
-   </div>
+
+<form th:action="@{/questionCreateOk}" method="post" th:object="${questionForm}">
+
+<div class="mb-3">
+<br><br>
+<h5>질문하기</h5>
+<hr>
+<div>
+	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+		<div th:each="err:${#fields.allErrors()}" th:text="${err}"></div>
+	</div>
+</div>
+<br>
+  <input type="text" name="subject" class="form-control" id="exampleFormControlInput1" placeholder="제목" th:field="*{subject}">
+</div>
+<br>
+<div class="mb-3">
+  <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="5" placeholder="내용" th:field="*{content}"></textarea>
+</div>
+<input type="submit" class="btn btn-primary mb-3" value="저장" style="width:80px; margin-left:100px;">
+<input type="button" class="btn btn-primary mb-3" value="목록" style="width:80px; margin-left:10px;" onclick="script:window.location='/list'">
+</form>
+   		
+   		
 </body>
 </html>
