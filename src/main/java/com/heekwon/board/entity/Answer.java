@@ -30,4 +30,7 @@ public class Answer {
 	@ManyToOne
 	private Question question; //질문게시판 객체(질문게시판의 id를 가져오는 필드생성)
 	
+	@ManyToOne
+	private SiteMember writer; // 글쓴이
+	
 }

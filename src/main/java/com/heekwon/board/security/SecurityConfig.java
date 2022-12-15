@@ -2,6 +2,9 @@ package com.heekwon.board.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration	//환경설정 파일임을 알림
 @EnableWebSecurity	//모든 웹에 대한 요청이 스프링 시큐리티의 컨트롤 하에 있음을 알림
+@EnableMethodSecurity(prePostEnabled = true) //@PreAuthorize 어노테이션이 동작하도록 함
 public class SecurityConfig {
 
 	@Bean
@@ -26,10 +30,15 @@ public class SecurityConfig {
 			.addHeaderWriter(new XFrameOptionsHeaderWriter(
 					XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
 			//로그인 로그아웃 설정
-			.and()
+			.and()//로그인
 				.formLogin()
 				.loginPage("/login")	//로그인 페이지가 보이게 하는 요청
-				.defaultSuccessUrl("/index");	//성공시 이동할 요청
+				.defaultSuccessUrl("/index")	//성공시 이동할 요청
+			.and()//로그아웃
+				.logout()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/index")
+				.invalidateHttpSession(true);	
 			
 		return http.build();
 	}
@@ -37,6 +46,12 @@ public class SecurityConfig {
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		
+		return authenticationConfiguration.getAuthenticationManager();
 	}
 	
 }

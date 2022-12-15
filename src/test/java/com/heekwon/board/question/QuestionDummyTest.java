@@ -15,9 +15,10 @@ public class QuestionDummyTest {
 	@Test
 	public void testDummyData(){
 		for(int i=0; i<150; i++) {
+			
 			String subject = String.format("testData%d", i);
 			String content = "testData content";
-			questionService.questionCreate(subject, content);
+			questionService.questionCreate(subject, content,"tiger");
 		}
 	}
 	

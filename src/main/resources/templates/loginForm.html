@@ -31,15 +31,15 @@
      </div>
     </nav> 
 	
-	<form th:action="@{/loginOk}" method="post">
+	<form th:action="@{/login}" method="post">
 
 		<div class="mb-3">
 		<br><br>
 		<h5>회원 로그인</h5>
 		<hr>
-			<div>
+			<div th:if="${param.error}">
 				<div class="alert alert-danger" >
-					<div></div>
+					로그인 실패! 아이디와 비밀번호를 확인해 주세요.
 				</div>
 			</div>
 		<br>

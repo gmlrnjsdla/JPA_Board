@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.heekwon.board.dto.QuestionDto;
 import com.heekwon.board.entity.Question;
+import com.heekwon.board.entity.SiteMember;
 import com.heekwon.board.exception.DataNotFoundException;
 import com.heekwon.board.repository.AnswerRepository;
 import com.heekwon.board.repository.QuestionRepository;
@@ -24,6 +25,7 @@ public class QuestionService {
 
 	private final QuestionRepository questionRepository;
 	private final AnswerRepository answerRepository;
+	private final MemberService memberService;
 	
 	public Page<Question> getList(int page){
 		
@@ -80,11 +82,14 @@ public class QuestionService {
 	}
 	
 	
-	public void questionCreate(String subject, String content) {
+	public void questionCreate(String subject, String content, String username) {
+		
+		SiteMember siteMember = memberService.getMemberInfo(username);
 		
 		Question q = new Question();
 		q.setSubject(subject);
 		q.setContent(content);
+		q.setWriter(siteMember);
 		
 		questionRepository.save(q);
 		

@@ -1,8 +1,11 @@
 package com.heekwon.board.controller;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +19,6 @@ import com.heekwon.board.dto.MemberForm;
 import com.heekwon.board.dto.QuestionDto;
 import com.heekwon.board.dto.QuestionForm;
 import com.heekwon.board.entity.Question;
-import com.heekwon.board.repository.MemberRepository;
 import com.heekwon.board.service.AnswerService;
 import com.heekwon.board.service.MemberService;
 import com.heekwon.board.service.QuestionService;
@@ -56,6 +58,12 @@ public class MainController {
 	public String join(MemberForm memberForm) {
 		return "joinForm";
 	}
+	
+	@RequestMapping(value = "/login")
+	public String login() {
+		return "loginForm";
+	}
+	
 	
 	@RequestMapping(value = "/joinOk")
 	public String answerCreate(@Valid MemberForm memberForm, BindingResult bindingResult, Model model) {
@@ -102,10 +110,13 @@ public class MainController {
 		return "questionView";
 	}
 	
+	@PreAuthorize("isAuthenticated")
 	@RequestMapping(value = "/answerCreate/{id}")
-	public String answerCreate(@PathVariable("id") Integer id, @Valid AnswerForm answerForm, BindingResult bindingResult, Model model) {
+	public String answerCreate(Principal principal,@PathVariable("id") Integer id, @Valid AnswerForm answerForm, BindingResult bindingResult, Model model) {
 		
 		QuestionDto q = questionService.getQuestionView(id);
+		
+		String username = principal.getName(); //현재 로그인 중인 사용자의 아이디를 가져옴.
 		
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("content", q);
@@ -113,7 +124,7 @@ public class MainController {
 			return "questionView";
 		}
 		String content = answerForm.getContent();
-		answerService.answerCreate(id, content);
+		answerService.answerCreate(id, content, username);
 		
 		return String.format("redirect:/questionView/%s", id);
 	}
@@ -124,26 +135,26 @@ public class MainController {
 		return "questionForm";
 	}
 	
+	@PreAuthorize("isAuthenticated")
 	@PostMapping(value = "/questionCreateOk")
-	public String createOk(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+	public String createOk(Principal principal, @Valid QuestionForm questionForm, BindingResult bindingResult) {
 		
 		if(bindingResult.hasErrors()) {
 			return "questionForm";
 		}
 		
+		String username = principal.getName();
 		String subject = questionForm.getSubject();
 		String content = questionForm.getContent();
 		
-		questionService.questionCreate(subject, content);
+		questionService.questionCreate(subject, content, username);
 		
 		return "redirect:list";
 	}
 	
-	@RequestMapping(value = "/login")
-	public String login() {
-		
-		return "loginForm";
-	}
+	
+	
+	
 	
 	
 	
