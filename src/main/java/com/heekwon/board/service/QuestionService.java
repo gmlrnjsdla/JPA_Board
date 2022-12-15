@@ -1,5 +1,6 @@
 package com.heekwon.board.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,15 +41,15 @@ public class QuestionService {
 		return pages;
 	}
 	
-	public List<QuestionDto> getQuestionList() {
+	public List<Question> getQuestionList() {
 		
 		List<Question> lq = questionRepository.findAll();
-		List<QuestionDto> qdtos = new ArrayList<QuestionDto>();
+		List<Question> qdtos = new ArrayList<Question>();
 		
 		for(int i=0; i<lq.size(); i++) {
 			Question q = lq.get(i);
 		
-			QuestionDto qdto = new QuestionDto();
+			Question qdto = new Question();
 			
 			qdto.setId(q.getId());
 			qdto.setContent(q.getContent());
@@ -62,10 +63,10 @@ public class QuestionService {
 		return qdtos;
 	}
 	
-	public QuestionDto getQuestionView(Integer id) {
+	public Question getQuestionView(Integer id) {
 		
 		Optional<Question> oq = questionRepository.findById(id);
-		QuestionDto qdto = new QuestionDto();
+		Question qdto = new Question();
 		
 		if(oq.isPresent()) {
 			Question q = oq.get();
@@ -74,7 +75,7 @@ public class QuestionService {
 			qdto.setSubject(q.getSubject());
 			qdto.setCreateTime(q.getCreateTime());
 			qdto.setAnswerList(q.getAnswerList());
-			return qdto;
+			return q;
 		}else {
 			throw new DataNotFoundException("해당질문이 없습니다.");
 		}
@@ -93,6 +94,21 @@ public class QuestionService {
 		
 		questionRepository.save(q);
 		
+	}
+	
+	public void modify(String subject, String content, Question question) {
+		
+		question.setSubject(subject);
+		question.setContent(content);
+		question.setModifyDate(LocalDateTime.now());
+		
+		questionRepository.save(question);
+		
+	}
+	
+	public void delete(Integer id) {
+		
+		questionRepository.deleteById(id);
 	}
 	
 	

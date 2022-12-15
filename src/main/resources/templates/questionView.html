@@ -22,7 +22,7 @@
      </div>
     </nav> 
 
-<div class="container my-3">
+<div class="container my-3" style="width:600px;">
 	
    <table class="table">
    	<tr>
@@ -42,6 +42,12 @@
    		<td th:text="${content.content}"></td>
 	<tr>
    </table>
+	<div class="my-3">
+		<a class="btn btn-primary mb-3" th:href="@{|/modify/${content.id}|}" th:text="수정"></a>&nbsp;
+		<a class="btn btn-primary mb-3" th:href="@{|/delete/${content.id}|}" th:text="삭제"></a>
+	</div>
+	
+<br>
 
    <h6 th:text="|총 ${#lists.size(content.answerList)}개의 답변이 있습니다.|"></h6>
    <hr>
@@ -52,18 +58,25 @@
    		<th th:text="${answer.writer.username}"></th>
    		<td th:text="${answer.content}"></td>
    		<td th:text="${answer.createTime}"></td>
+   		<td>
+   			<a class="btn btn-primary mb-3" th:href="@{|/answerModify/${answer.id}|}" th:text="수정"></a>
+   		</td>
+   		<td>
+   			<a class="btn btn-primary mb-3" th:href="@{|/answerDelete/${answer.id}|}" th:text="삭제"></a>
+   		</td>
    	</tr>
    </table>
    
    <br>
-   <form th:action="@{|/answerCreate/${content.id}|}" method="get" th:object="${answerForm}">
+   <form th:action="@{|/answerCreate/${content.id}|}" method="post" th:object="${answerForm}">
    <div>
 	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
 		<div th:each="err:${#fields.allErrors()}" th:text="${err}"></div>
 	</div>
 </div>
    
-   	<textarea rows="5" cols="54" name="content" id="content" th:field="*{content}"></textarea>
+   	<textarea rows="5" cols="75" name="content" id="content" th:field="*{content}"></textarea><br>
+   	
    	<input type="submit"  class="btn btn-primary mb-3" value="답변입력" id="answer_submit">
    	<input type="button" class="btn btn-primary mb-3" value="목록"  onclick="script:window.location='/list'">
    </form>

@@ -1,5 +1,6 @@
 package com.heekwon.board.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.heekwon.board.entity.Answer;
 import com.heekwon.board.entity.Question;
 import com.heekwon.board.entity.SiteMember;
+import com.heekwon.board.exception.DataNotFoundException;
 import com.heekwon.board.repository.AnswerRepository;
 import com.heekwon.board.repository.QuestionRepository;
 
@@ -35,5 +37,33 @@ public class AnswerService {
 		answerRepository.save(a);
 		
 	}
+	
+	public Answer getAnswer(Integer id) {
+		
+		Optional<Answer> optAnswer = answerRepository.findById(id);
+		
+		if(optAnswer.isPresent()) {
+			Answer a = optAnswer.get();
+			
+			return a;
+		}else {
+			throw new DataNotFoundException("해당답변이 없습니다.");
+		}
+		
+	}
+	
+	public void answerModify(String content, Answer answer) {
+		
+		answer.setContent(content);
+		answer.setModifyDate(LocalDateTime.now());
+		
+		answerRepository.save(answer);
+	}
+
+	public void delete(Integer id) {
+		answerRepository.deleteById(id);
+	}
+	
+	
 	
 }
