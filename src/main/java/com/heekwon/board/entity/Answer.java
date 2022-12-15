@@ -1,6 +1,7 @@
 package com.heekwon.board.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -34,5 +35,8 @@ public class Answer {
 	private SiteMember writer; // 글쓴이
 	
 	private LocalDateTime modifyDate;
+	
+	@ManyToMany
+	private Set<SiteMember> liker; // 좋아요>< 누른 아이디
 	
 }

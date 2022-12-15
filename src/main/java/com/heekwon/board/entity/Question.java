@@ -2,8 +2,17 @@ package com.heekwon.board.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -39,4 +48,8 @@ public class Question {
 	
 	private LocalDateTime modifyDate;
 	
+	@ManyToMany
+	private Set<SiteMember> liker; // 좋아요>< 누른 아이디
+	//set >> 중복 허용 X
+	//다대다 관계일때 새로운 question_liker 테이블이 생성, 필드값은 각테이블의 기본키.
 }
