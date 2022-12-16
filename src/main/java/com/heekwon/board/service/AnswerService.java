@@ -65,5 +65,13 @@ public class AnswerService {
 	}
 	
 	
+	public void answerLike(Answer answer, SiteMember siteMember) {
+		
+		answer.getLiker().add(siteMember);
+		//현재 질문글이 가지고 있는 좋아료를 누른 회원의 집함을 가져온 후 그 집합에 새로운 원소 추가
+		answerRepository.save(answer);
+		
+	}
+	
 	
 }

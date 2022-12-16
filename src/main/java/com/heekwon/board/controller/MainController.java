@@ -22,6 +22,7 @@ import com.heekwon.board.dto.MemberForm;
 import com.heekwon.board.dto.QuestionForm;
 import com.heekwon.board.entity.Answer;
 import com.heekwon.board.entity.Question;
+import com.heekwon.board.entity.SiteMember;
 import com.heekwon.board.service.AnswerService;
 import com.heekwon.board.service.MemberService;
 import com.heekwon.board.service.QuestionService;
@@ -269,7 +270,29 @@ public class MainController {
 		return "redirect:/index";
 	}
 	
+	@PreAuthorize("isAuthenticated")
+	@GetMapping(value = "/questionLike/{id}")
+	public String questionLike(@PathVariable("id") Integer id, Principal principal) {
+		
+		Question q = questionService.getQuestionView(id);
+		SiteMember sitemember= memberService.getMemberInfo(principal.getName());
+		
+		questionService.questionLike(q, sitemember);
+		
+		return String.format("redirect:/questionView/%s", id);
+	}
 	
+	@PreAuthorize("isAuthenticated")
+	@GetMapping(value = "/answerLike/{id}")
+	public String answerLike(@PathVariable("id") Integer id, Principal principal) {
+		
+		Answer a = answerService.getAnswer(id);
+		SiteMember sitemember= memberService.getMemberInfo(principal.getName());
+		
+		answerService.answerLike(a, sitemember);
+		
+		return String.format("redirect:/questionView/%s", a.getQuestion().getId());
+	}
 	
 	
 }

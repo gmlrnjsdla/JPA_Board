@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
 <title>questionView</title>
@@ -12,15 +13,16 @@
        <div class="collapse navbar-collapse">
        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-             <a class="nav-link" th:href="@{/login}">로그인</a>
+             <a class="nav-link" sec:authorize="isAnonymous" th:href="@{/login}">로그인</a>
+             <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
           </li>
           <li class="nav-item">
-             <a class="nav-link" th:href="@{/join}">회원가입</a>
+             <a class="nav-link" sec:authorize="isAnonymous" th:href="@{/join}">회원가입</a>
           </li>
        </ul>
        </div>
      </div>
-    </nav> 
+    </nav>  
 
 <div class="container my-3" style="width:600px;">
 	
@@ -43,8 +45,11 @@
 	<tr>
    </table>
 	<div class="my-3">
-		<a class="btn btn-primary mb-3" th:href="@{|/modify/${content.id}|}" th:text="수정"></a>&nbsp;
-		<a class="btn btn-primary mb-3" th:href="@{|/delete/${content.id}|}" th:text="삭제"></a>
+		<a class="btn btn-primary mb-3" th:href="@{|/modify/${content.id}|}" sec:authorize="isAuthenticated()" th:text="수정"></a>&nbsp;
+		<a class="btn btn-primary mb-3" th:href="@{|/delete/${content.id}|}" sec:authorize="isAuthenticated()" th:text="삭제"></a>
+		<a class="btn btn-primary mb-3" th:href="@{|/questionLike/${content.id}|}">
+			좋아요 <span class="badge text-bg-secondary" th:text="${#lists.size(content.liker)}">4</span>
+		</a>
 		
 	</div>
 	
@@ -65,6 +70,11 @@
    		<td>
    			<a class="btn btn-primary mb-3" th:href="@{|/answerDelete/${answer.id}|}" th:text="삭제"></a>
    		</td>
+   		<td>
+   		<a class="btn btn-primary mb-3" th:href="@{|/answerLike/${answer.id}|}">
+			좋아요 <span class="badge text-bg-secondary" th:text="${#lists.size(answer.liker)}">4</span>
+		</a>
+		</td>
    	</tr>
    </table>
    

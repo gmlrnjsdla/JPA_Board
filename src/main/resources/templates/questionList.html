@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout}"
-	>
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	
 <head>
 
 <style>
@@ -31,11 +30,11 @@
        <div class="collapse navbar-collapse">
        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-             <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+             <a class="nav-link" sec:authorize="isAnonymous" th:href="@{/login}">로그인</a>
              <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
           </li>
           <li class="nav-item">
-             <a class="nav-link" th:href="@{/join}">회원가입</a>
+             <a class="nav-link" sec:authorize="isAnonymous" th:href="@{/join}">회원가입</a>
           </li>
        </ul>
        </div>
